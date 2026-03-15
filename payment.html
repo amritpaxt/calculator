@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>✨ Payment Complete - Let's Go!</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="stars"></div>
+    
+    <div class="container payment-container">
+        <div class="success-animation">
+            <div class="confetti"></div>
+            <div class="success-circle">
+                <span class="checkmark">✓</span>
+            </div>
+        </div>
+
+        <header class="header">
+            <h1>🎉 Yessss!</h1>
+            <p class="tagline">you're officially living your best life</p>
+        </header>
+
+        <div class="payment-receipt">
+            <div class="receipt-item">
+                <span>Plan Selected:</span>
+                <strong id="planName">Pro Energy</strong>
+            </div>
+            <div class="receipt-item">
+                <span>Price:</span>
+                <strong id="planPrice">$4.99/month</strong>
+            </div>
+            <div class="receipt-item">
+                <span>Transaction ID:</span>
+                <strong id="transactionId">TXN-<span id="txnNumber"></span></strong>
+            </div>
+            <div class="receipt-item">
+                <span>Status:</span>
+                <strong class="success-status">✓ COMPLETED</strong>
+            </div>
+        </div>
+
+        <div class="message-box">
+            <h2>what you unlocked fr fr 🔓</h2>
+            <ul id="featuresList"></ul>
+        </div>
+
+        <div class="cta-buttons">
+            <button class="btn-primary-action" onclick="window.location.href='index.html'">
+                🧮 back to calc
+            </button>
+            <button class="btn-secondary-action" onclick="shareWin()">
+                📱 flex on twitter
+            </button>
+        </div>
+
+        <footer class="subtle-text">
+            <p>*this is all fake lol. no real money was charged. just for fun 💀</p>
+            <p>but also... imagine having actual premium features that good for real tho</p>
+        </footer>
+    </div>
+
+    <style>
+        .success-animation {
+            position: relative;
+            height: 200px;
+            margin: 40px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .success-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .checkmark {
+            color: white;
+            font-size: 60px;
+            animation: scaleIn 0.8s ease-out;
+        }
+
+        @keyframes popIn {
+            0% {
+                transform: scale(0);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes scaleIn {
+            0% {
+                transform: scale(0) rotate(-180deg);
+            }
+            100% {
+                transform: scale(1) rotate(0);
+            }
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #667eea;
+            animation: confettiFall 3s ease-out forwards;
+        }
+    </style>
+
+    <script>
+        const plans = {
+            basic: { name: 'Basic Vibes', price: '$0/forever', features: ['3 operations', 'clean design', 'works offline'] },
+            pro: { name: 'Pro Energy', price: '$4.99/month', features: ['dark mode', 'calculation history', 'custom colors', 'no ads'] },
+            premium: { name: 'Peak Vibes', price: '$9.99/month', features: ['advanced operations', 'export to csv', 'priority support', 'custom name in app'] }
+        };
+
+        function initPaymentPage() {
+            const params = new URLSearchParams(window.location.search);
+            const plan = params.get('plan') || 'pro';
+            const planData = plans[plan];
+
+            document.getElementById('planName').textContent = planData.name;
+            document.getElementById('planPrice').textContent = planData.price;
+            document.getElementById('txnNumber').textContent = Math.random().toString(36).substring(2, 12).toUpperCase();
+
+            const featuresList = document.getElementById('featuresList');
+            planData.features.forEach(feature => {
+                const li = document.createElement('li');
+                li.textContent = '✓ ' + feature;
+                featuresList.appendChild(li);
+            });
+
+            // Create confetti
+            createConfetti();
+        }
+
+        function createConfetti() {
+            const container = document.querySelector('.success-animation');
+            for (let i = 0; i < 30; i++) {
+                const confetti = document.createElement('div');
+                confetti.style.position = 'absolute';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.width = (Math.random() * 8 + 4) + 'px';
+                confetti.style.height = (Math.random() * 8 + 4) + 'px';
+                confetti.style.background = ['#667eea', '#764ba2', '#f093fb', '#4facfe'][Math.floor(Math.random() * 4)];
+                confetti.style.borderRadius = '50%';
+                confetti.style.animation = `confettiFall ${Math.random() * 2 + 2}s ease-out forwards`;
+                confetti.style.animationDelay = Math.random() * 0.2 + 's';
+                container.appendChild(confetti);
+            }
+
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes confettiFall {
+                    to {
+                        transform: translateY(400px) rotate(360deg);
+                        opacity: 0;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+
+        function shareWin() {
+            const text = "just leveled up with CaLc Pro 🚀 the most unhinged calculator ever fr fr";
+            const url = "https://github.com/amritpaxt/calculator";
+            window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
+        }
+
+        initPaymentPage();
+    </script>
+</body>
+</html>
